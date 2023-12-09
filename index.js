@@ -117,6 +117,23 @@ app.get('/api/persons/:id', (request, response) => {
     response.send(infoHTML);
   });
 
+  app.put('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id);
+    const { number } = request.body;
+
+    // Encuentra la persona por su ID
+    const personToUpdate = persons.find((p) => p.id === id);
+
+    // Si la persona existe, actualiza el número
+    if (personToUpdate) {
+        personToUpdate.number = number;
+        response.json(personToUpdate);
+    } else {
+        // Si no se encuentra la persona, devuelve un error 404
+        response.status(404).json({ error: 'Person not found.' });
+    }
+});
+
 const PORT = 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
